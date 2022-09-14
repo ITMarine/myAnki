@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ topic.title }}{% endblock %}
+
+{% block content %}
+
+  <p><h2>{{ card.topic }}</h2></p>
+  <p>{{ card.body }}</p>
+  <p><form action="{% url 'anki:card_detail' card.id %}" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Check" >
+    </form>
+  </p>
+  {% if request.method == 'POST' %}
+    <p>{{ card.correct_answer }}</p>
+  {% endif %}
+
+
+        <p><a href="{{ card_previous.get_absolute_url }}">Previous</a>
+        <a href="{{ card_next.get_absolute_url }}">Next</a></p>
+
+        <p><a href="{% url 'anki:card_update' card.id %}">Update this card</a></p>
+        <p><a href="{% url 'anki:card_remove' card.id %}">Remove to archive</a></p>
+        <p><a href="{% url 'anki:card_create' %}">+New card</a></p>
+
+
+{% endblock %}

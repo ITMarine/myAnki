@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+<h1><a href="{% url 'anki:topic_list' %}">Anki app</a></h1>
+<p><a href="{% url 'anki:topic_create' %}">+New topic</a></p>
+
+{% block content %}{% endblock %}
+
+</body>
+</html>

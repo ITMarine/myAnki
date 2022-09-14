@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Card update{% endblock %}
+
+{% block content %}
+
+  <h2>Update card</h2>
+  <p>
+    <form action="{% url 'anki:card_update' card.id %}" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Update" />
+    </form>
+  </p>
+
+{% endblock %}

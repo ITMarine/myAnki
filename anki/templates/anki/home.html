@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}myAnki{% endblock %}
+
+<h2>Topics:</h2>
+
+{% block content %}
+  {% for topic in topics %}
+    <p><a href="{{ topic.get_absolute_url }}">{{ topic.title }}</a></p>
+  {% endfor %}
+{% endblock %}
