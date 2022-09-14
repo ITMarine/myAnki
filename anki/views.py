@@ -1,5 +1,4 @@
 from django.core.exceptions import ValidationError
-from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
@@ -47,7 +46,6 @@ def card_detail(request, pk):
             return render(request, 'anki/card.html', {'form': form,
                                                       'card': card,
                                                       'topic': topic})
-
     card.answer = ''
     form = CardForm()
     return render(request, 'anki/card.html', {'card': card,
@@ -60,9 +58,7 @@ def card_create(request, pk):
     if request.method == 'POST':
         form = CardCreateForm(request.POST)
         if form.is_valid():
-            card = form.save(commit=False)
-            card.created = timezone.now()
-            card.save()
+            card = form.save()
             return redirect('anki:card_detail', pk=card.id)
         raise ValidationError("Incorrect card data")
 
