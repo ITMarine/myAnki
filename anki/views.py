@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
@@ -30,30 +31,32 @@ def topic_create(request):
 
 def topic_delete(request, pk):
     topic = get_object_or_404(Topic, id=pk)
-    topic.delete()
-    return redirect('anki:topic_list')
+    if request.method == 'POST':
+        topic.delete()
+        return redirect('anki:topic_list')
+    return render(request, 'anki/topic_delete.html', {'topic': topic})
 
 
 def card_detail(request, pk):
     card = get_object_or_404(Card, id=pk)
-    card_next = Card.objects.filter(pk__gt=card.id).order_by('pk').first()
-    card_previous = Card.objects.filter(pk__lt=card.id).order_by('-pk').first()
+    topic = card.topic
     if request.method == 'POST':
         form = CardForm(request.POST, instance=card)
         if form.is_valid():
             form.save()
-            return render(request, 'anki/card.html', {'form': form, 'card': card,
-                                                      'card_next': card_next,
-                                                      'card_previous': card_previous})
+            return render(request, 'anki/card.html', {'form': form,
+                                                      'card': card,
+                                                      'topic': topic})
 
     card.answer = ''
     form = CardForm()
-    return render(request, 'anki/card.html', {'card': card, 'form': form,
-                                              'card_next': card_next,
-                                              'card_previous': card_previous})
+    return render(request, 'anki/card.html', {'card': card,
+                                              'form': form,
+                                              'topic': topic})
 
 
-def card_create(request):
+def card_create(request, pk):
+    topic = Topic.objects.get(id=pk)
     if request.method == 'POST':
         form = CardCreateForm(request.POST)
         if form.is_valid():
@@ -62,8 +65,9 @@ def card_create(request):
             card.save()
             return redirect('anki:card_detail', pk=card.id)
         raise ValidationError("Incorrect card data")
-    form = CardCreateForm()
-    return render(request, 'anki/card_create.html', {'form': form})
+
+    form = CardCreateForm(initial={'topic': topic})
+    return render(request, 'anki/card_create.html', {'form': form, 'topic': topic})
 
 
 def card_update(request, pk):
@@ -80,13 +84,11 @@ def card_update(request, pk):
 
 def card_to_archive(request, pk):
     card = get_object_or_404(Card, id=pk)
-    card_next = Card.objects.filter(pk__gt=card.id).order_by('pk').first()
-    card_first = Card.objects.first()
     card.is_active = False
-    if card_next:
-        return redirect('anki:card_detail', card_next.id)
-    else:
-        return redirect('anki:card_detail', card_first.id)
+    next_card = card.get_next_card_or_first()
+    return redirect('anki:card_detail', next_card.id)
+
+
 
 
 

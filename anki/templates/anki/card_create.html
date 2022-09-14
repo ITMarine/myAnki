@@ -4,7 +4,7 @@
 
 {% block content %}
   <h2>Create new card</h2>
-  <p><form method="post" action="{% url 'anki:card_create' %}">
+  <p><form method="post" action="{% url 'anki:card_create' topic.id %}">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Save card">

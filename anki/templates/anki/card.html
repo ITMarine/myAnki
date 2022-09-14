@@ -5,6 +5,7 @@
 {% block content %}
 
   <p><h2>{{ card.topic }}</h2></p>
+
   <p>{{ card.body }}</p>
   <p><form action="{% url 'anki:card_detail' card.id %}" method="post">
       {% csrf_token %}
@@ -12,17 +13,18 @@
       <input type="submit" value="Check" >
     </form>
   </p>
-  {% if request.method == 'POST' %}
-    <p><pre>{{ card.correct_answer }}</pre></p>
-  {% endif %}
+          {% if request.method == 'POST' %}
+            <p><pre>{{ card.correct_answer }}</pre></p>
+          {% endif %}
 
 
-        <p><a href="{{ card_previous.get_absolute_url }}">Previous</a>
-        <a href="{{ card_next.get_absolute_url }}">Next</a></p>
+
+        <p><a href="{{ card.get_previous_card_or_last.get_absolute_url }}">Previous</a>
+        <a href="{{ card.get_next_card_or_first.get_absolute_url }}">Next</a></p>
 
         <p><a href="{% url 'anki:card_update' card.id %}">Update this card</a></p>
         <p><a href="{% url 'anki:card_remove' card.id %}">Remove to archive</a></p>
-        <p><a href="{% url 'anki:card_create' %}">+New card</a></p>
+        <p><a href="{% url 'anki:card_create' topic.id%}">+New card</a></p>
 
 
 {% endblock %}
