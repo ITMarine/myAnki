@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import Textarea
 
 from .models import Topic, Card
 
@@ -13,7 +14,9 @@ class CardForm(forms.ModelForm):
     class Meta:
         model = Card
         fields = ('answer',)
-    answer = forms.CharField(widget=forms.Textarea)
+        widgets = {
+            'answer': Textarea(attrs={'cols': 80, 'rows': 20}),
+        }
 
 
 class CardCreateForm(forms.ModelForm):
@@ -21,3 +24,6 @@ class CardCreateForm(forms.ModelForm):
         model = Card
         fields = '__all__'
         exclude = ('answer', 'created',)
+        widgets = {
+            'correct_answer': Textarea(attrs={'cols': 80, 'rows': 20}),
+        }

@@ -74,7 +74,7 @@ def card_update(request, pk):
             card = form.save()
             return redirect('anki:card_detail', pk=card.id)
         raise ValidationError("Incorrect card data")
-    form = CardCreateForm()
+    form = CardCreateForm(instance=card)
     return render(request, 'anki/card_update.html', {'form': form, 'card': card})
 
 
