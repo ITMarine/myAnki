@@ -4,18 +4,30 @@
 
 {% block content %}
 
-  <p><h2>{{ card.topic }}</h2></p>
+      <p><h2>{{ card.topic }}</h2></p>
+      <div class="container mb-5">
+          <div class="row-col">
+              <p>{{ card.body }}</p>
+          </div>
+      </div>
+      <div class="container text-center">
+          <div class="row">
+              <div class="col-6">
+                  <form action="{% url 'anki:card_detail' card.id %}" method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="submit" value="Check" >
+                     </form>
+              </div>
+              <div class="col-6">
+                    {% if request.method == 'POST' %}
+                        <pre>{{ card.correct_answer }}</pre>
+                    {% endif %}
+              </div>
+          </div>
+      </div>
+      <p>
 
-  <p>{{ card.body }}</p>
-  <p><form action="{% url 'anki:card_detail' card.id %}" method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <input type="submit" value="Check" >
-    </form>
-  </p>
-          {% if request.method == 'POST' %}
-            <p><pre>{{ card.correct_answer }}</pre></p>
-          {% endif %}
 
 
 
