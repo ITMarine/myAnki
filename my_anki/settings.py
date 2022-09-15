@@ -86,7 +86,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'anki',
         'USER': 'ankiuser',
-        'PASSWORD': 'na8621009',
+        'PASSWORD': '123',
         'HOST': 'localhost',
         'PORT': '',
     }
