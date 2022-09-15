@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}{{ topic.title }}{% endblock %}
 
@@ -10,29 +11,31 @@
               <p>{{ card.body }}</p>
           </div>
       </div>
-      <div class="container text-center">
+      <div class="container">
           <div class="row">
-              <div class="col-6">
+              <div class="col-5">
                   <form action="{% url 'anki:card_detail' card.id %}" method="post">
                         {% csrf_token %}
-                        {{ form.as_p }}
-                        <input type="submit" value="Check" >
-                     </form>
+                        <input class="answer" type="text" name="answer" placeholder="{{ card.answer }}">
+                        <input type="submit" value="Check">
+                  </form>
               </div>
-              <div class="col-6">
+              <div class="col-5">
                     {% if request.method == 'POST' %}
                         <pre>{{ card.correct_answer }}</pre>
                     {% endif %}
               </div>
           </div>
+          <div class="row justify-content-center mt-5 mb-5">
+              <div class="col-1">
+                  <a href="{{ card.get_previous_card_or_last.get_absolute_url }}" >Previous</a>
+              </div>
+              <div class="col-1">
+                  <a href="{{ card.get_next_card_or_first.get_absolute_url }}" >Next</a>
+              </div>
+          </div>
       </div>
-      <p>
 
-
-
-
-        <p><a href="{{ card.get_previous_card_or_last.get_absolute_url }}">Previous</a>
-        <a href="{{ card.get_next_card_or_first.get_absolute_url }}">Next</a></p>
 
         <p><a href="{% url 'anki:card_update' card.id %}">Update this card</a></p>
         <p><a href="{% url 'anki:card_remove' card.id %}">Remove to archive</a></p>

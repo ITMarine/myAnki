@@ -1,0 +1,21 @@
+.answer {
+    width: 500px;
+    height: 300px;
+}
+
+.check_button {
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.card_button {
+    width: 50px;
+}
+
+.topic-header {
+    margin-bottom: 50px;
+}
+
+.topic-list{
+    padding: 20px;
+}

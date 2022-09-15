@@ -40,17 +40,11 @@ def card_detail(request, pk):
     card = get_object_or_404(Card, id=pk)
     topic = card.topic
     if request.method == 'POST':
-        form = CardForm(request.POST, instance=card)
-        if form.is_valid():
-            form.save()
-            return render(request, 'anki/card.html', {'form': form,
-                                                      'card': card,
-                                                      'topic': topic})
+        card.answer = request.POST['answer']
+        return render(request, 'anki/card.html', {'card': card, 'topic': topic})
     card.answer = ''
     form = CardForm()
-    return render(request, 'anki/card.html', {'card': card,
-                                              'form': form,
-                                              'topic': topic})
+    return render(request, 'anki/card.html', {'card': card, 'form': form, 'topic': topic})
 
 
 def card_create(request, pk):

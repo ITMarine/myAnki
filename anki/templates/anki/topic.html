@@ -5,8 +5,11 @@
 
 
 {% block content %}
+<div style="padding: 20px;">
+  <div class="mb-5">
+    <h2>{{ topic.title }}</h2>
+  </div>
 
-  <h2>{{ topic.title }}</h2>
   <p><a href="{% url 'anki:card_create' topic.id %}">+Add card</a></p>
   <p><a href="{% url 'anki:topic_delete' topic.id %}">Delete topic</a></p>
   <p>
@@ -14,6 +17,6 @@
       <p><a href="{{ card.get_absolute_url }}">{{ card.body }}</a></p>
     {% endfor %}
   </p>
-
+</div>
 
 {% endblock %}

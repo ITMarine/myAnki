@@ -25,6 +25,6 @@ class CardCreateForm(forms.ModelForm):
         fields = '__all__'
         exclude = ('answer', 'created',)
         widgets = {
-            'correct_answer': Textarea(attrs={'cols': 80, 'rows': 20}),
-            'body': Textarea(attrs={'cols': 60, 'rows': 10}),
+            'correct_answer': Textarea(attrs={'cols': 80, 'rows': 15}),
+            'body': Textarea(attrs={'cols': 80, 'rows': 8}),
         }
